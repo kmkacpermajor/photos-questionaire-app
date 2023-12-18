@@ -1,0 +1,497 @@
+package put.ai.drools;
+
+import put.ai.drools.QuestionDialog;
+import put.ai.drools.ResultDialog;
+import javax.swing.JFrame; 
+import java.util.ArrayList;
+
+global JFrame frame;
+
+declare enum PossibleAnswers
+	YES("Yes"), NO("No"), IFSTONE("I.F. Stone"), ROLLINGSTONE("Rolling Stone"), STONEPHILLIPS("Stone Phillips"), BLOODSTONE("Bloodstone"), TOP("T.O.P."), LENSCRATCH("Lenscratch"), CONSCIENTIOUS("Conscientious"), ANSEL("Ansel"), ROBERT("Robert"), INNIE("Innie"), OUTIE("Outie"), BATMAN("Batman"), AQUAMAN("Aquaman"), WONDERWOMAN("Wonder Woman");
+	fullName : String;
+end
+
+declare Question
+   question : String
+   answers : ArrayList
+   notAnswered : boolean
+end
+
+declare Answer
+	question : String
+	answer : String
+end
+
+declare Result
+	result : String
+end
+
+rule "Ask question"
+	when q : Question(notAnswered == true)
+	then
+		QuestionDialog questionDialog = new QuestionDialog(frame, q.getQuestion(), q.getAnswers());
+		insert(new Answer(q.getQuestion(), questionDialog.getSelectedAnswer()));
+		q.setNotAnswered(false);
+		update(q);
+end
+
+rule "Show result"
+	when r : Result()
+	then
+		ResultDialog resultDialog = new ResultDialog(frame, r.getResult());
+end
+
+rule "Start"
+	when
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Are you a people person?", answers, true));
+end
+
+rule "Are you a people person? Yes"
+	when Answer(question == "Are you a people person?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Do you want to make money at this?", answers, true));
+end
+
+rule "Do you want to make money at this? Yes"
+	when Answer(question == "Do you want to make money at this?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Ever Fallen In Love?", answers, true));
+end
+
+rule "Ever Fallen In Love? Yes"
+	when Answer(question == "Ever Fallen In Love?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Prudish?", answers, true));
+end
+
+rule "Prudish? Yes"
+	when Answer(question == "Prudish?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("WEDDINGS"));
+end
+
+rule "Prudish? No"
+	when Answer(question == "Prudish?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("BFA?", answers, true));
+end
+
+rule "BFA? Yes"
+	when Answer(question == "BFA?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("EROTICA"));
+end
+
+rule "BFA? No"
+	when Answer(question == "BFA?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("PORN"));
+end
+
+rule "Ever Fallen In Love? No"
+	when Answer(question == "Ever Fallen In Love?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Bleeding Heart Activist?", answers, true));
+end
+
+rule "Bleeding Heart Activist? Yes"
+	when Answer(question == "Bleeding Heart Activist?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Adrenaline junkie?", answers, true));
+end
+
+rule "Adrenaline junkie? Yes"
+	when Answer(question == "Adrenaline junkie?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("WAR PHOTOGRAPHY"));
+end
+
+rule "Adrenaline junkie? No"
+	when Answer(question == "Adrenaline junkie?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Alt-process fetish?", answers, true));
+end
+
+rule "Alt-process fetish? Yes"
+	when Answer(question == "Alt-process fetish?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("B & W / SEPIA POVERTY PORN"));
+end
+
+rule "Alt-process fetish? No"
+	when Answer(question == "Alt-process fetish?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("SOCIAL DOCUMENTARY"));
+end
+
+rule "Bleeding Heart Activist? No"
+	when Answer(question == "Bleeding Heart Activist?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Do you have quick reflexes?", answers, true));
+end
+
+rule "Do you have quick reflexes? Yes"
+	when Answer(question == "Do you have quick reflexes?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("SPORTS PHOTOGRAPHY"));
+end
+
+rule "Do you have quick reflexes? No"
+	when Answer(question == "Do you have quick reflexes?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.IFSTONE.getFullName());
+        answers.add(PossibleAnswers.ROLLINGSTONE.getFullName());
+        answers.add(PossibleAnswers.STONEPHILLIPS.getFullName());
+        answers.add(PossibleAnswers.BLOODSTONE.getFullName());
+		insert(new Question("What's your Birth Stone?", answers, true));
+end
+
+rule "What's your Birth Stone? I.F. Stone"
+	when Answer(question == "What's your Birth Stone?" && answer == PossibleAnswers.IFSTONE.getFullName())
+	then
+		insert(new Result("PHOTOJOURNALISM"));
+end
+
+rule "What's your Birth Stone? Rolling Stone"
+	when Answer(question == "What's your Birth Stone?" && answer == PossibleAnswers.ROLLINGSTONE.getFullName())
+	then
+		insert(new Result("MUSIC/CONCERT PHOTOGRAPHY"));
+end
+
+rule "What's your Birth Stone? Stone Phillips"
+	when Answer(question == "What's your Birth Stone?" && answer == PossibleAnswers.STONEPHILLIPS.getFullName())
+	then
+		insert(new Result("STOCK PHOTOGRAPHY"));
+end
+
+rule "What's your Birth Stone? Bloodstone"
+	when Answer(question == "What's your Birth Stone?" && answer == PossibleAnswers.BLOODSTONE.getFullName())
+	then
+		insert(new Result("COMMERCIAL/ADVERTISING"));
+end
+
+rule "Do you want to make money at this? No"
+	when Answer(question == "Do you want to make money at this?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Are you a voyeur?", answers, true));
+end
+
+rule "Are you a voyeur? Yes"
+	when Answer(question == "Are you a voyeur?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Agoraphobe?", answers, true));
+end
+
+rule "Agoraphobe? Yes"
+	when Answer(question == "Agoraphobe?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("GSV STREET PHOTOGRAPHY"));
+end
+
+rule "Agoraphobe? No"
+	when Answer(question == "Agoraphobe?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("STREET PHOTOGRAPHY"));
+end
+
+rule "Are you a voyeur? No"
+	when Answer(question == "Are you a voyeur?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Are you a control freak?", answers, true));
+end
+
+rule "Are you a control freak? Yes"
+	when Answer(question == "Are you a control freak?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("FINE ART PORTRAITS"));
+end
+
+rule "Are you a control freak? No"
+	when Answer(question == "Are you a control freak?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Do you believe the journey is the destination?", answers, true));
+end
+
+rule "Do you believe the journey is the destination? Yes"
+	when Answer(question == "Do you believe the journey is the destination?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("TINTYPE PORTRAITS"));
+end
+
+rule "Do you believe the journey is the destination? No"
+	when Answer(question == "Do you believe the journey is the destination?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("ENVRIONMENTAL PORTRAITS"));
+end
+
+rule "Are you a people person? No"
+	when Answer(question == "Are you a people person?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Do you own a photo vest, fedora or light meter?", answers, true));
+end
+
+rule "Do you own a photo vest, fedora or light meter? Yes"
+	when Answer(question == "Do you own a photo vest, fedora or light meter?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.TOP.getFullName());
+        answers.add(PossibleAnswers.LENSCRATCH.getFullName());
+        answers.add(PossibleAnswers.CONSCIENTIOUS.getFullName());
+		insert(new Question("Favorite Blog?", answers, true));
+end
+
+rule "Favorite Blog? T.O.P."
+	when Answer(question == "Favorite Blog?" && answer == PossibleAnswers.TOP.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.ANSEL.getFullName());
+        answers.add(PossibleAnswers.ROBERT.getFullName());
+		insert(new Question("Favorite Adams?", answers, true));
+end
+
+rule "Favorite Adams? Ansel"
+	when Answer(question == "Favorite Adams?" && answer == PossibleAnswers.ANSEL.getFullName())
+	then
+		insert(new Result("f/64 REDUX"));
+end
+
+rule "Favorite Adams? Robert"
+	when Answer(question == "Favorite Adams?" && answer == PossibleAnswers.ROBERT.getFullName())
+	then
+		insert(new Result("NEO NEW TOPOGRAPHICS"));
+end
+
+rule "Favorite Blog? Lenscratch"
+	when Answer(question == "Favorite Blog?" && answer == PossibleAnswers.LENSCRATCH.getFullName())
+	then
+		insert(new Result("RUIN PORN"));
+end
+
+rule "Favorite Blog? Conscientious"
+	when Answer(question == "Favorite Blog?" && answer == PossibleAnswers.CONSCIENTIOUS.getFullName())
+	then
+		insert(new Result("PHOTOS MADE WITH SOMETHING AT STAKE"));
+end
+
+rule "Do you own a photo vest, fedora or light meter? No"
+	when Answer(question == "Do you own a photo vest, fedora or light meter?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Gear Aquisition Syndrome?", answers, true));
+end
+
+rule "Gear Aquisition Syndrome? Yes"
+	when Answer(question == "Gear Aquisition Syndrome?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("TEST PRINTS DEMONSTRATING LATEST PURCHASE"));
+end
+
+rule "Gear Aquisition Syndrome? No"
+	when Answer(question == "Gear Aquisition Syndrome?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("MFA?", answers, true));
+end
+
+rule "MFA? Yes"
+	when Answer(question == "MFA?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Unresolved Childhood Issues?", answers, true));
+end
+
+rule "Unresolved Childhood Issues? Yes"
+	when Answer(question == "Unresolved Childhood Issues?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("DOMESTIC SCENES"));
+end
+
+rule "Unresolved Childhood Issues? No"
+	when Answer(question == "Unresolved Childhood Issues?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Were you a painter at one point?", answers, true));
+end
+
+rule "Were you a painter at one point? Yes"
+	when Answer(question == "Were you a painter at one point?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("ABSTRACT EXPRESSIONISM"));
+end
+
+rule "Were you a painter at one point? No"
+	when Answer(question == "Were you a painter at one point?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("OCD Tendencies?", answers, true));
+end
+
+rule "OCD Tendencies? Yes"
+	when Answer(question == "OCD Tendencies?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("TYPOLOGIES"));
+end
+
+rule "OCD Tendencies? No"
+	when Answer(question == "OCD Tendencies?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Have you ever operated a camera?", answers, true));
+end
+
+rule "Have you ever operated a camera? Yes"
+	when Answer(question == "Have you ever operated a camera?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.INNIE.getFullName());
+        answers.add(PossibleAnswers.OUTIE.getFullName());
+		insert(new Question("Bellybutton Morphology?", answers, true));
+end
+
+rule "Bellybutton Morphology? Innie"
+	when Answer(question == "Bellybutton Morphology?" && answer == PossibleAnswers.INNIE.getFullName())
+	then
+		insert(new Result("PHOTOS ABOUT PHOTOGRAPHY"));
+end
+
+rule "Bellybutton Morphology? Outie"
+	when Answer(question == "Bellybutton Morphology?" && answer == PossibleAnswers.OUTIE.getFullName())
+	then
+		insert(new Result("SOCIAL LANDSCAPES ON MEDIUM FORMAT COLOR FILM"));
+end
+
+rule "Have you ever operated a camera? No"
+	when Answer(question == "Have you ever operated a camera?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("APPROPRIATED PHOTOGRAPHY"));
+end
+
+rule "MFA? No"
+	when Answer(question == "MFA?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Weakness for nostalgia?", answers, true));
+end
+
+rule "Weakness for nostalgia? Yes"
+	when Answer(question == "Weakness for nostalgia?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("CARDS AND CALENDARS"));
+end
+
+rule "Weakness for nostalgia? No"
+	when Answer(question == "Weakness for nostalgia?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Do you trust insitutions?", answers, true));
+end
+
+rule "Do you trust insitutions? Yes"
+	when Answer(question == "Do you trust insitutions?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		insert(new Result("ARCHITECTURAL PHOTOGRAPHY"));
+end
+
+rule "Do you trust insitutions? No"
+	when Answer(question == "Do you trust insitutions?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.YES.getFullName());
+        answers.add(PossibleAnswers.NO.getFullName());
+		insert(new Question("Granduer oriented?", answers, true));
+end
+
+rule "Granduer oriented? Yes"
+	when Answer(question == "Granduer oriented?" && answer == PossibleAnswers.YES.getFullName())
+	then
+		ArrayList<String> answers = new ArrayList<>();
+        answers.add(PossibleAnswers.BATMAN.getFullName());
+        answers.add(PossibleAnswers.AQUAMAN.getFullName());
+        answers.add(PossibleAnswers.WONDERWOMAN.getFullName());
+		insert(new Question("Your favorite Superfriend?", answers, true));
+end
+
+rule "Your favorite Superfriend? Batman"
+	when Answer(question == "Your favorite Superfriend?" && answer == PossibleAnswers.BATMAN.getFullName())
+	then
+		insert(new Result("NIGHT PHOTOGRAPHY"));
+end
+
+rule "Your favorite Superfriend? Aquaman"
+	when Answer(question == "Your favorite Superfriend?" && answer == PossibleAnswers.AQUAMAN.getFullName())
+	then
+		insert(new Result("UNDERWATER PHOTOGRAPHY"));
+end
+
+rule "Your favorite Superfriend? Wonder Woman"
+	when Answer(question == "Your favorite Superfriend?" && answer == PossibleAnswers.WONDERWOMAN.getFullName())
+	then
+		insert(new Result("AERIAL PHOTOGRAPHY"));
+end
+
+rule "Granduer oriented? No"
+	when Answer(question == "Granduer oriented?" && answer == PossibleAnswers.NO.getFullName())
+	then
+		insert(new Result("SURVEILLANCE/FORENSICS"));
+end
